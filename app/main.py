@@ -30,7 +30,7 @@ app = FastAPI(redoc_url=None)
 
 @app.post("/hook/{token}")
 async def webhook(token: str, background_tasks: BackgroundTasks):
-    if hashlib.sha256(bytes(token, 'utf-8')) == hashlib.sha256(bytes(secret, 'utf-8')) == False:
+    if not (hashlib.sha256(bytes(token, 'utf-8')).digest() == hashlib.sha256(bytes(secret, 'utf-8')).digest()):
         raise HTTPException(403, detail="Invalid Secret")
     background_tasks.add_task(synczerotier)
 
