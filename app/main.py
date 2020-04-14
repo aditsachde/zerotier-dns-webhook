@@ -7,7 +7,7 @@ from datetime import datetime
 
 import requests
 from fastapi import BackgroundTasks, FastAPI, HTTPException
-from git import Repo
+from git import Repo, Actor
 
 secret_path = "/s/webhook_secret"
 api_key_path = "/s/api_key"
@@ -25,6 +25,9 @@ git_dir = "/git"
 
 zerotier_url = f"https://my.zerotier.com/api/network/{zerotier_network}/member"
 headers = {"Authorization": f"Bearer {api_key}"}
+
+author = Actor("Automaton", "automaton@automaton.dev")
+committer = Actor("Automaton", "automaton@automaton.dev")
 
 app = FastAPI(redoc_url=None)
 
@@ -52,10 +55,12 @@ def synczerotier():
 
     repo = Repo(git_dir)
     repo.index.add("records.tf")
-    repo.index.commit(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 
-    with repo.git.custom_environment(GIT_SSH_COMMAND=ssh_cmd):
-        repo.remotes.origin.push()
+    if len(repo.index.diff(repo.head.commit)) > 0:
+        repo.index.commit(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), author=author, committer=committer)
+
+        with repo.git.custom_environment(GIT_SSH_COMMAND=ssh_cmd):
+            repo.remotes.origin.push()
 
 
 def createzerotierconfig():
