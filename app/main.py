@@ -69,7 +69,7 @@ def createzerotierconfig():
     hosts = []
 
     for i in r:
-        if (i["config"]["authorized"] == True) and (i["online"] == True):
+        if (i["name"] != "") and ("dns-ignore" not in i["description"]) and (i["config"]["authorized"] == True) and (i["online"] == True):
             new_dict = {}
             new_dict["name"] = i["name"]
             new_dict["ip"] = i["config"]["ipAssignments"]

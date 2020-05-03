@@ -16,3 +16,15 @@ webhook_secret: This secret will be part of the url, https://example.com/hook/we
 git_url: Your repository url, expects ssh git url.
 network_id: Your zerotier network id.
 ```
+
+## Ignore
+
+If the phrase `dns-ignore` appears in the description of any node, it will be ignored.
+If the name of the node is empty, it will be ignored.
+
+## Build
+
+```bash
+docker build -t aditsachde/zerotier-cf-webhook:11 -f Dockerfile .
+docker push aditsachde/zerotier-cf-webhook:11                    
+```
