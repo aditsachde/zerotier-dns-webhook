@@ -72,6 +72,7 @@ def createzerotierconfig():
         if (i["name"] != "") and ("dns-ignore" not in i["description"]) and (i["config"]["authorized"] == True) and (i["online"] == True):
             new_dict = {}
             new_dict["name"] = i["name"]
+            new_dict["id"] = i["config"]["id"]
             new_dict["ip"] = i["config"]["ipAssignments"]
             hosts.append(new_dict)
 
@@ -89,5 +90,17 @@ def createzerotierconfig():
                 "  type    = \"A\"\n"
                 "}\n\n"
             )
+
+        ipv6 = "fdd3:ecf5:726d:7066:fa99:93" + j["id"][0:2] + ":" + j["id"][2:6] + ":" + j["id"][6:10]
+
+        records.append(
+            f"resource \"cloudflare_record\" \"{name}\"" 
+            "{\n"
+            "  zone_id = var.cloudflare_zone_id\n"
+            f"  name    = \"{name}.zt\"\n"
+            f"  value   = \"{ipv6}\"\n"
+            "  type    = \"AAAA\"\n"
+            "}\n\n"            
+        )
 
     return("".join(records))
