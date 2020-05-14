@@ -94,7 +94,7 @@ def createzerotierconfig():
         ipv6 = "fdd3:ecf5:726d:7066:fa99:93" + j["id"][0:2] + ":" + j["id"][2:6] + ":" + j["id"][6:10]
 
         records.append(
-            f"resource \"cloudflare_record\" \"{name}\"" 
+            f"resource \"cloudflare_record\" \"{name}6\"" 
             "{\n"
             "  zone_id = var.cloudflare_zone_id\n"
             f"  name    = \"{name}.zt\"\n"
